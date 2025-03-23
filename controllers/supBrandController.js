@@ -42,15 +42,20 @@ const updateSupBrandById = async(req, res)=>{
     }
 };
 //Get ID Where SupId = ? and BrandId = ?
-const getSupBrandId = async(req, res)=>{
-    try{
-        const supBrandId = await SupBrandService.getSupBrandId(req.params.supId,req.params.brandId);
-        res.status(200).json(supBrandId);
-    }catch(error){
-        logger.error(`Error in getsupBrandId: ${error.message}`);
-        res.status(400).json({error: error.message});
+const getSupBrandId = async(req, res) => {
+    try {
+      const { supId, brandId } = req.params;
+      const supBrandId = await SupBrandService.getSupBrandId(supId, brandId);
+      if (!supBrandId) {
+        return res.status(200).json(null);
+      }
+      res.status(200).json(supBrandId);
+    } catch (error) {
+      logger.error(`Error in getSupBrandId: ${error.message}`);
+      res.status(404).json({ error: error.message });
     }
-};
+  };
+  
 //Delete By ID
 const deleteSupBrandById = async (req, res)=>{
     try{

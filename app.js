@@ -1,5 +1,6 @@
 // app.js
 const express = require('express');
+const cors = require('cors');
 const sequelize = require('./config/db'); 
 const brandRoutes = require('./routes/brandRoutes');
 const inventoryRoutes = require('./routes/inventoryRoutes');
@@ -8,6 +9,9 @@ const stockMovementRoutes = require('./routes/stockMovementsRoutes');
 const supBrandRoutes = require('./routes/supBrandRoutes');
 const supplierRoutes = require('./routes/supplierRoutes');
 const app = express();
+
+app.use(cors());
+app.use(express.json());
 
 app.use('/api/brands', brandRoutes);
 app.use('/api/inventory', inventoryRoutes);
