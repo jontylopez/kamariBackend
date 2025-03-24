@@ -9,10 +9,10 @@ const stockMovementRoutes = require('./routes/stockMovementsRoutes');
 const supBrandRoutes = require('./routes/supBrandRoutes');
 const supplierRoutes = require('./routes/supplierRoutes');
 const app = express();
-
+const barcodeRoutes = require('./routes/barcode');
 app.use(cors());
 app.use(express.json());
-
+app.use('/api/barcode', barcodeRoutes);
 app.use('/api/brands', brandRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/products', productRoutes);
