@@ -28,3 +28,5 @@ sequelize.authenticate()
 
 // Export the Sequelize instance for use in models
 module.exports = sequelize;
+//bjanithrandika
+//cHAf0qeigN0nG6au
