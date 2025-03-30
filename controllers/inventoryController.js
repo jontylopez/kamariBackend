@@ -31,6 +31,16 @@ const getInventoryById = async(req, res)=>{
         res.status(404).json({error: error.message});
     }
 };
+//Get Inventory Data By Barcode
+const getInventoryByBarcodeId = async(req, res)=>{
+    try{
+        const inventory = await InventoryService.getInventoryByBarcodeId(req.params.bCodeId);
+        res.status(200).json(inventory);
+    }catch(error){
+        logger.error(`Error in getInventoryByBarcodeId: ${error.message}`);
+        res.status(404).json({error: error.message});
+    }
+};
 //Update Inventory By ID
 const updateInventoryById = async(req, res)=>{
     try{
@@ -57,5 +67,6 @@ module.exports = {
     getAllInventory,
     getInventoryById,
     updateInventoryById,
-    deleteInventoryById
+    deleteInventoryById,
+    getInventoryByBarcodeId
 }

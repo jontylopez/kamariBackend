@@ -21,16 +21,12 @@ const StockMovements = sequelize.define('StockMovements', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    movement_type: {
-        type: DataTypes.ENUM('in', 'out'),
-        allowNull: false
-    },
     buy_price: {
-        type: DataTypes.DECIMAL(10,2), // ✅ Fixed decimal precision
+        type: DataTypes.DECIMAL(10,2),
         allowNull: true
     },
     sell_price: {
-        type: DataTypes.DECIMAL(10,2), // ✅ Fixed decimal precision
+        type: DataTypes.DECIMAL(10,2),
         allowNull: true
     },
     date: {
@@ -41,12 +37,12 @@ const StockMovements = sequelize.define('StockMovements', {
     tableName: 'stock_movements',
     timestamps: false,
     indexes: [
-        { fields: ['inventoryId', 'date'] } // ✅ Fixed index format
+        { fields: ['inventoryId', 'date'] }
     ]
 });
 
-// ✅ Define Associations
-Inventory.hasMany(StockMovements, { foreignKey: 'inventoryId' }); // An Inventory item has many StockMovements
-StockMovements.belongsTo(Inventory, { foreignKey: 'inventoryId' }); // A StockMovement belongs to an Inventory item
+
+Inventory.hasMany(StockMovements, { foreignKey: 'inventoryId' });
+StockMovements.belongsTo(Inventory, { foreignKey: 'inventoryId' });
 
 module.exports = StockMovements;

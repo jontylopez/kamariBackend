@@ -32,6 +32,18 @@ const getInventoryById = async (id)=>{
         throw new Error(`Error Fetching Inventory: ${error.message}`);
     }
 };
+//Get Inventory data by BarcodeID
+const getInventoryByBarcodeId = async (bCodeId)=>{
+    try{
+        const inventory = await Inventory.findOne({ where: { bCodeId } });
+        if(!inventory){
+            throw new Error('No Item Found for this Barcode');
+        }
+        return inventory;
+    }catch(error){
+        throw new Error(`Error Fetching Inventory: ${error.message}`)
+    }
+};
 //Update Inventory By ID
 const updateInventoryById = async (id, data)=>{
     try{
@@ -63,5 +75,6 @@ module.exports = {
     getAllInventory,
     getInventoryById,
     updateInventoryById,
-    deleteInventoryById
+    deleteInventoryById,
+    getInventoryByBarcodeId
 }

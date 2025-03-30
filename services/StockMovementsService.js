@@ -49,6 +49,21 @@ const updateStMovementById = async (id, data) => {
     }
 };
 
+
+const updateStockQuantity = async (id, newQuantity) => {
+  const movement = await StockMovement.findByPk(id);
+  if (!movement) throw new Error("Stock entry not found");
+
+  movement.quantity = newQuantity;
+  await movement.save();
+  return movement;
+};
+
+module.exports = {
+  updateStockQuantity,
+};
+
+
 // ✅ Delete Stock Movement By ID
 const deleteStMovementById = async (id) => {
     try {
@@ -68,5 +83,6 @@ module.exports = {
     getAllStMovement,
     getStMovementById,
     updateStMovementById,
+    updateStockQuantity,
     deleteStMovementById
 };

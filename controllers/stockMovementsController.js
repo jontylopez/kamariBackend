@@ -41,6 +41,21 @@ const updateMovementById = async(req, res)=>{
         res.status(400).json({error: error.message});
     }
 };
+const updateQuantity = async (req, res) => {
+    const { id } = req.params;
+    const { quantity } = req.body;
+  
+    console.log("🛠️ Incoming quantity update:", { id, quantity });
+  
+    try {
+      const updated = await StockMovementService.updateStockQuantity(id, quantity);
+      res.json(updated);
+    } catch (error) {
+      console.error("❌ Error in updateQuantity:", error);
+      res.status(500).json({ error: error.message });
+    }
+  };
+  
 //Delete By ID
 const deleteMovementById = async(req,res)=>{
     try{
@@ -56,5 +71,6 @@ module.exports = {
     getAllMovement,
     getMovementById,
     updateMovementById,
+    updateQuantity,
     deleteMovementById
 }
