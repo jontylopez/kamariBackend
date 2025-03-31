@@ -24,7 +24,7 @@ const getAllPosSessions = async(req, res)=>{
 //Get By ID
 const getPosSessionById = async(req, res)=>{
     try{
-        const posSession = await PosSessionService.getPosSessionById(req.params.id);
+        const posSession = await PosSessionService.getSessionById(req.params.id);
         res.status(200).json(posSession);
     }catch(error){
         logger.error(`Error in getPosSessionById: ${error.messaga}`);
