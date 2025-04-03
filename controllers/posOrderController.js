@@ -31,6 +31,26 @@ const getPosOrderById = async(req,res)=>{
         res.status(404).json({error: error.message});
     }
 };
+// get By Session Id
+const getOrderBySession = async (req, res) => {
+    try {
+      // Fetch orders and their items for the given session_id
+      const posOrders = await POSOrderService.getPosOrderBySession(req.params.session_id);
+  
+      // Check if orders exist
+      if (!posOrders || posOrders.length === 0) {
+        return res.status(404).json({ error: 'No Orders Found' });
+      }
+  
+      // Respond with the orders and their items
+      res.status(200).json(posOrders);
+    } catch (error) {
+      // Log the error and send a response
+      logger.error(`Error in getOrderBySession: ${error.message}`);
+      res.status(500).json({ error: error.message });
+    }
+  };
+  
 //Update By ID
 const updatePosOrderById = async(req, res)=>{
     try{
@@ -56,6 +76,7 @@ module.exports = {
     createPosOrder,
     getAllPosOrders,
     getPosOrderById,
+    getOrderBySession,
     updatePosOrderById,
     deletePosOrderById
 }

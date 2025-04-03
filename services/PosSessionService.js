@@ -12,13 +12,10 @@ const createPosSession = async (data) =>{
 
 const getActiveSession = async () => {
     try {
-      const session = await POS_SESSION.findOne({
-        where: { status: 'open' },
-        order: [['id', 'DESC']]
-      });
+      const session = await POS_SESSION.findOne({ where: { status: 'open' } });
       return session;
     } catch (error) {
-      throw new Error(`Error checking active session: ${error.message}`);
+      throw new Error(`Error fetching active session: ${error.message}`);
     }
   };
   

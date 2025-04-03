@@ -45,6 +45,11 @@ const POS_ORDER_ITEM = sequelize.define('POS_ORDER_ITEM', {
     type: DataTypes.INTEGER,
     allowNull: false
   },
+  discount: {
+    type: DataTypes.DECIMAL(5, 2),
+    allowNull: true,
+    comment: "Per item discount in %",
+  },   
   subtotal: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false

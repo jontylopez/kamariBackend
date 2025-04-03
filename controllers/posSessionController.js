@@ -55,10 +55,14 @@ const deletePosSeessionById = async (req, res)=>{
 const getActiveSession = async (req, res) => {
     try {
       const session = await PosSessionService.getActiveSession();
+  
       if (!session) {
-        return res.status(404).json({ message: "No active session" });
+        // ✅ Instead of 404, return a controlled "inactive" response
+        return res.status(200).json({ active: false });
       }
-      res.status(200).json(session);
+  
+      // Return the actual session data
+      res.status(200).json({ active: true, ...session.toJSON() });
     } catch (error) {
       logger.error(`Error in getActiveSession: ${error.message}`);
       res.status(500).json({ error: error.message });

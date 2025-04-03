@@ -13,6 +13,8 @@ const posSessionRoutes = require('./routes/posSessionRoutes');
 const posOrderRoutes = require('./routes/posOrderRoutes');
 const posOrderItemRoutes = require('./routes/posOrderItemRoutes');
 const posPaymentRoutes = require('./routes/posPaymentRoutes');
+const cashTransactionRoutes = require('./routes/cashTransactionRoutes');
+const posReturnRoutes = require('./routes/posReturnRoutes');
 const app = express();
 const barcodeRoutes = require('./routes/barcode');
 app.use(cors());
@@ -29,6 +31,8 @@ app.use('/api/pos-session',posSessionRoutes);
 app.use('/api/pos-order',posOrderRoutes);
 app.use('/api/pos-order-item',posOrderItemRoutes);
 app.use('/api/pos-payment', posPaymentRoutes);
+app.use('/api/cash', cashTransactionRoutes);
+app.use('/api/return', posReturnRoutes);
 
 app.get('/', (req, res) => {
   res.send('Welcome to Kamari Backend!');

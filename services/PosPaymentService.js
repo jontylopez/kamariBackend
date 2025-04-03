@@ -80,4 +80,4 @@ module.exports = {
     getPaymentsByOrderId,
     updatePosPaymentById,
     deletePosPaymentById
-}
+};

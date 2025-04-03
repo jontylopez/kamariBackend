@@ -35,6 +35,11 @@ const POS_ORDER = sequelize.define('POS_ORDER',{
          },
          onDelete:'SET NULL'
     },
+    discount: {
+        type: DataTypes.DECIMAL(5, 2),
+        allowNull: true,
+        comment: "Bill-wide discount in %",
+      },      
     total:{
         type: DataTypes.DECIMAL(10,2),
         allowNull: false
