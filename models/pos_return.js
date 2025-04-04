@@ -48,6 +48,10 @@ const POS_RETURN = sequelize.define('POS_RETURN', {
     type: DataTypes.BOOLEAN, 
     allowNull: false,
   },
+  status:{
+    type: DataTypes.ENUM('unused', 'used'),
+    defaultValue:'unused'
+  },
   processed_by: {
     type: DataTypes.STRING,
     allowNull: false,

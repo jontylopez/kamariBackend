@@ -18,7 +18,7 @@ const POS_PAYMENT = sequelize.define('POS_PAYMENT',{
         onDelete: 'CASCADE'
     },
     method:{
-        type: DataTypes.ENUM('cash','card','qr','voucher'),
+        type: DataTypes.ENUM('cash', 'card', 'bank', 'ex', 'qr', 'voucher'),
         allowNull: false
     },
     amount:{
