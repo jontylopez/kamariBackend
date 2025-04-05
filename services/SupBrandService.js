@@ -1,4 +1,4 @@
-const SupBrand = require('../models/SupBrand');
+const SupBrand = require('../models/sup_brand');
 
 //Create SupBrand
 const createSupBrand = async(data)=>{
@@ -33,12 +33,12 @@ const getSupBrandById = async(id)=>{
     }
 };
 //Get ID of SupBrand Where supId and brandId
-const getSupBrandId = async(supId,brandId)=>{
+const getSupBrandId = async(sup_id,brand_id)=>{
     try{
         const supbrand = await SupBrand.findOne({
             where: {
-                supId: supId,
-                brandId: brandId
+                supId: sup_id,
+                brandId: brand_id
             }
         });
         if(!supbrand){

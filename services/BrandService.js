@@ -1,4 +1,4 @@
-const Brand = require('../models/Brand'); // Import the Brand model
+const Brand = require('../models/brand'); 
 
 // ✅ Create a new brand
 const createBrand = async (data) => {

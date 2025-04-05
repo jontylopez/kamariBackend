@@ -44,8 +44,8 @@ const updateSupBrandById = async(req, res)=>{
 //Get ID Where SupId = ? and BrandId = ?
 const getSupBrandId = async(req, res) => {
     try {
-      const { supId, brandId } = req.params;
-      const supBrandId = await SupBrandService.getSupBrandId(supId, brandId);
+      const { sup_id, brand_id } = req.params;
+      const supBrandId = await SupBrandService.getSupBrandId(sup_id, brand_id);
       if (!supBrandId) {
         return res.status(200).json(null);
       }

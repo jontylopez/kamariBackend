@@ -34,7 +34,7 @@ const getInventoryById = async(req, res)=>{
 //Get Inventory Data By Barcode
 const getInventoryByBarcodeId = async(req, res)=>{
     try{
-        const inventory = await InventoryService.getInventoryByBarcodeId(req.params.bCodeId);
+        const inventory = await InventoryService.getInventoryByBarcodeId(req.params.b_code_id);
         res.status(200).json(inventory);
     }catch(error){
         logger.error(`Error in getInventoryByBarcodeId: ${error.message}`);

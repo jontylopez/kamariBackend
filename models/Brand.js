@@ -1,5 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = require('../config/db'); // Import the Sequelize instance
+const sequelize = require('../config/db'); 
 
 const Brand = sequelize.define('Brand', {
   id: {
@@ -16,8 +16,8 @@ const Brand = sequelize.define('Brand', {
     defaultValue: Sequelize.NOW
   }
 }, {
-  tableName: 'brand', // Explicitly define table name
-  timestamps: false  // Disable createdAt and updatedAt
+  tableName: 'brand', 
+  timestamps: false  
 });
 
 module.exports = Brand;

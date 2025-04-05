@@ -1,8 +1,8 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 const POS_ORDER = require('./pos_order');
-const Inventory = require('./Inventory');
-const StockMovements = require('./StockMovements');
+const Inventory = require('./inventory');
+const StockMovements = require('./stock_movements');
 
 const POS_ORDER_ITEM = sequelize.define('POS_ORDER_ITEM', {
   id: {

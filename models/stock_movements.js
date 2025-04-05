@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const Inventory = require('./Inventory');
+const Inventory = require('./inventory');
 
 const StockMovements = sequelize.define('StockMovements', {
     id: {
@@ -8,7 +8,7 @@ const StockMovements = sequelize.define('StockMovements', {
         primaryKey: true,
         autoIncrement: true
     },
-    inventoryId: {
+    inventory_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -37,12 +37,12 @@ const StockMovements = sequelize.define('StockMovements', {
     tableName: 'stock_movements',
     timestamps: false,
     indexes: [
-        { fields: ['inventoryId', 'date'] }
+        { fields: ['inventory_id', 'date'] }
     ]
 });
 
 
-Inventory.hasMany(StockMovements, { foreignKey: 'inventoryId' });
-StockMovements.belongsTo(Inventory, { foreignKey: 'inventoryId' });
+Inventory.hasMany(StockMovements, { foreignKey: 'inventory_id' });
+StockMovements.belongsTo(Inventory, { foreignKey: 'inventory_id' });
 
 module.exports = StockMovements;

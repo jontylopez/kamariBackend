@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const Product = require('./Product');
-const SupBrand = require('./SupBrand');
+const Product = require('./product');
+const SupBrand = require('./sup_brand');
 
 const Inventory = sequelize.define('Inventory', {
   id: {
@@ -13,7 +13,7 @@ const Inventory = sequelize.define('Inventory', {
     type: DataTypes.STRING(100),
     allowNull: false,
   },
-  productId: {
+  product_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -22,7 +22,7 @@ const Inventory = sequelize.define('Inventory', {
     },
     onDelete: 'CASCADE',
   },
-  supBrId: {
+  sup_br_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -43,20 +43,20 @@ const Inventory = sequelize.define('Inventory', {
     type: DataTypes.TEXT,
     allowNull: true,
   },
-  bCodeId: {
+  b_code_id: {
     type: DataTypes.STRING(50),
     allowNull: false,
   },
 }, {
   tableName: 'inventory',
   timestamps: false,
-  indexes: [{ fields: ['productId', 'size', 'color'] }],
+  indexes: [{ fields: ['product_id', 'size', 'color'] }],
 });
 
-Product.hasMany(Inventory, { foreignKey: 'productId' });
-Inventory.belongsTo(Product, { foreignKey: 'productId' });
+Product.hasMany(Inventory, { foreignKey: 'product_id' });
+Inventory.belongsTo(Product, { foreignKey: 'product_id' });
 
-SupBrand.hasMany(Inventory, { foreignKey: 'supBrId' });
-Inventory.belongsTo(SupBrand, { foreignKey: 'supBrId' });
+SupBrand.hasMany(Inventory, { foreignKey: 'sup_br_id' });
+Inventory.belongsTo(SupBrand, { foreignKey: 'sup_br_id' });
 
 module.exports = Inventory;

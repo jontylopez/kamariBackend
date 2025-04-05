@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 const POS_SESSION = require('./pos_session');
-const Inventory = require('./Inventory');
+const Inventory = require('./inventory');
 
 const POS_RETURN = sequelize.define('POS_RETURN', {
   id: {

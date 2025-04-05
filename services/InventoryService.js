@@ -1,4 +1,4 @@
-const Inventory = require('../models/Inventory');
+const Inventory = require('../models/inventory');
 
 //Create Inventory
 const createInventory = async (data)=>{
@@ -33,9 +33,9 @@ const getInventoryById = async (id)=>{
     }
 };
 //Get Inventory data by BarcodeID
-const getInventoryByBarcodeId = async (bCodeId)=>{
+const getInventoryByBarcodeId = async (b_code_id)=>{
     try{
-        const inventory = await Inventory.findOne({ where: { bCodeId } });
+        const inventory = await Inventory.findOne({ where: { b_code_id } });
         if(!inventory){
             throw new Error('No Item Found for this Barcode');
         }

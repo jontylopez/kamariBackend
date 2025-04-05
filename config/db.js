@@ -1,23 +1,22 @@
-// Import required modules
 const { Sequelize } = require('sequelize');
-require('dotenv').config();  // Load environment variables from .env file
+require('dotenv').config();
 
-// Create Sequelize instance and set up MySQL connection using environment variables
+
 const sequelize = new Sequelize(
-  process.env.DB_NAME,   // Database name
-  process.env.DB_USERNAME,  // Database username
-  process.env.DB_PASSWORD,  // Database password
+  process.env.DB_NAME,
+  process.env.DB_USERNAME, 
+  process.env.DB_PASSWORD,  
   {
-    host: process.env.DB_HOST,  // Database host (localhost)
-    dialect: 'mysql',  // Use MySQL as the database dialect
-    logging: false,  // Disable SQL query logging (optional)
+    host: process.env.DB_HOST,
+    dialect: 'mysql', 
+    logging: false,  
     define: {
-      timestamps: false  // Disable automatic creation of timestamp columns (createdAt, updatedAt)
+      timestamps: false  
     }
   }
 );
 
-// Test the database connection
+
 sequelize.authenticate()
   .then(() => {
     console.log('Database connection has been established successfully.');
@@ -26,7 +25,6 @@ sequelize.authenticate()
     console.error('Unable to connect to the database:', error);
   });
 
-// Export the Sequelize instance for use in models
 module.exports = sequelize;
 //bjanithrandika
 //cHAf0qeigN0nG6au
