@@ -1,4 +1,6 @@
 const Customer = require('../models/customer');
+const { Sequelize } = require("sequelize");
+
 
 //Create
 const createCustomer = async(data)=>{
@@ -33,17 +35,26 @@ const getCustomerById = async(id)=>{
     }
 };
 //Get By Phone
-const getCustomerByPhone = async(phone)=>{
-    try{
-        const customer = await Customer.findOne({ where: { phone } }); 
-        if(!customer){
-            throw new Error('No Customer Found');
-        }
-        return customer;
-    }catch(error){
-        throw new Error(`Error in Fetching Customer: ${error.message}`);
+const getCustomerByPhone = async (phone) => {
+    try {
+      const formatted = phone.replace(/\D/g, "");
+  
+      const customer = await Customer.findOne({
+        where: Sequelize.where(
+          Sequelize.fn('REPLACE', Sequelize.col('phone'), '-', ''),
+          formatted
+        )
+      });
+  
+      // ✅ Return null instead of throwing if not found
+      if (!customer) return null;
+  
+      return customer;
+    } catch (error) {
+      throw new Error(`Error in Fetching Customer: ${error.message}`);
     }
-}
+  };
+  
 //Update By ID
 const updateCustomerById = async(id,data)=>{
     try{

@@ -37,8 +37,8 @@ const getSupBrandId = async(sup_id,brand_id)=>{
     try{
         const supbrand = await SupBrand.findOne({
             where: {
-                supId: sup_id,
-                brandId: brand_id
+                sup_id: sup_id,
+                brand_id: brand_id
             }
         });
         if(!supbrand){

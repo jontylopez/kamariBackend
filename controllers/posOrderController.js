@@ -1,16 +1,38 @@
 const POSOrderService = require('../services/PosOrderService');
 const logger = require('../utils/logger');
 
-//Create
-const createPosOrder = async(req, res)=>{
-    try{
-        const posOrder = await POSOrderService.createPosOrder(req.body);
-        res.status(201).json(posOrder);
-    }catch(error){
-        logger.error(`Error in createPosOrder: ${error.message}`);
-        res.status(500).json({error: error.message});
+const createPosOrder = async (req, res) => {
+  try {
+    const { order, items, payments } = req.body;
+
+    if (!order || !items || !Array.isArray(items)) {
+      return res.status(400).json({ error: "Invalid request payload" });
     }
+
+    console.log("Controller received order data:", { order, itemCount: items.length, paymentCount: payments?.length || 0 });
+
+    // Pass payments to service
+    const posOrder = await POSOrderService.createPosOrder(order, items, payments || []);
+
+    res.status(201).json(posOrder);
+
+  } catch (error) {
+    logger.error(`Error in createPosOrder: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
 };
+
+const getNextOrderId = async (req, res) => {
+  try {
+    const nextId = await POSOrderService.getNextOrderId();
+    res.status(200).json({ nextId });
+  } catch (error) {
+    console.error("Error in getNextOrderId:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 //Get All
 const getAllPosOrders = async(req, res)=>{
     try{
@@ -75,6 +97,7 @@ const deletePosOrderById = async (req, res)=>{
 module.exports = {
     createPosOrder,
     getAllPosOrders,
+    getNextOrderId,
     getPosOrderById,
     getOrderBySession,
     updatePosOrderById,

@@ -1,9 +1,11 @@
 const POS_ORDER_ITEM = require('../models/pos_order_item');
 
 //Create
-const createPosOrderItem = async(data)=>{
+const createPosOrderItem = async(data, transaction = null)=>{
     try{
-        const posOrderItem = await POS_ORDER_ITEM.create(data);
+        // Use the transaction if provided
+        const options = transaction ? { transaction } : {};
+        const posOrderItem = await POS_ORDER_ITEM.create(data, options);
         return posOrderItem;
     }catch(error){
         throw new Error(`Error Creating Order Item: ${error.message}`);

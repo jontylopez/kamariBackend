@@ -35,10 +35,17 @@ const getCustomerById = async(req, res)=>{
 const getCustomerByPhone = async (req, res) => {
     try {
       const customer = await CustomerService.getCustomerByPhone(req.params.phone);
-      res.status(200).json(customer);
+  
+      if (!customer) {
+        // Return success response with `found: false`
+        return res.status(200).json({ found: false });
+      }
+  
+      // Return customer data with `found: true`
+      res.status(200).json({ found: true, ...customer.toJSON() });
     } catch (error) {
       logger.error(`Error in getCustomerByPhone: ${error.message}`);
-      res.status(404).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   };
   

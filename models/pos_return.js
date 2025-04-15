@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 const POS_SESSION = require('./pos_session');
-const Inventory = require('./inventory');
+
 
 const POS_RETURN = sequelize.define('POS_RETURN', {
   id: {
@@ -18,24 +18,6 @@ const POS_RETURN = sequelize.define('POS_RETURN', {
     },
     onDelete: 'CASCADE',
   },
-  inventory_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: Inventory,
-      key: 'id',
-    },
-    onDelete: 'CASCADE',
-  },
-  quantity: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 1,
-  },
-  price: {
-    type: DataTypes.DECIMAL(10, 2),
-    allowNull: false,
-  },
   date: {
     type: DataTypes.DATEONLY,
     allowNull: false,
@@ -44,18 +26,19 @@ const POS_RETURN = sequelize.define('POS_RETURN', {
     type: DataTypes.TIME,
     allowNull: false,
   },
-  restock: {
-    type: DataTypes.BOOLEAN, 
-    allowNull: false,
+  total_price: {
+    type: DataTypes.DECIMAL(10, 2),
+    get() {
+      const raw = this.getDataValue('total_price');
+      return raw === null ? 0 : parseFloat(raw);
+    },
   },
-  status:{
+  
+  status: {
     type: DataTypes.ENUM('unused', 'used'),
-    defaultValue:'unused'
-  },
-  processed_by: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
+    defaultValue: 'unused'
+  }, 
+
 }, {
   tableName: 'pos_return', 
   timestamps: false,
@@ -63,6 +46,5 @@ const POS_RETURN = sequelize.define('POS_RETURN', {
 
 // Relationships
 POS_RETURN.belongsTo(POS_SESSION, { foreignKey: 'session_id' });
-POS_RETURN.belongsTo(Inventory, { foreignKey: 'inventory_id' });
 
 module.exports = POS_RETURN;

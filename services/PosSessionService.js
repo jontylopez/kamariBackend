@@ -1,14 +1,18 @@
 const POS_SESSION = require('../models/pos_session');
 
-// Create Stock Movement
-const createPosSession = async (data) =>{
-    try{
-        const posSession = await POS_SESSION.create(data);
-        return posSession;
-    }catch(error){
-        throw new Error(`Error creating PosSession: ${error.message}`);
+// Create Pos Session
+const createPosSession = async (data) => {
+    try {
+      const existingSession = await POS_SESSION.findOne({ where: { status: 'open' } });
+      if (existingSession) {
+        throw new Error('A POS session is already active. Please close it before starting a new one.');
+      }
+      const posSession = await POS_SESSION.create(data);
+      return posSession;
+    } catch (error) {
+      throw new Error(`Error creating POS session: ${error.message}`);
     }
-};
+  };
 
 const getActiveSession = async () => {
     try {
@@ -71,11 +75,38 @@ const deletePosSeessionById = async(id)=>{
         throw new Error(`Error Deleting Poss Session: ${error.message}`);
     }
 };
+
+const closePosSessionById = async (id, { end_time, cash_in_drawer, closed_by }) => {
+    try {
+      const posSession = await POS_SESSION.findByPk(id);
+  
+      if (!posSession) {
+        throw new Error('Session not found');
+      }
+  
+      if (posSession.status === 'closed') {
+        throw new Error('Session is already closed');
+      }
+  
+      // Only update allowed fields
+      posSession.status = 'closed';
+      posSession.end_time = end_time;
+      posSession.cash_in_drawer = cash_in_drawer;
+      posSession.closed_by = closed_by;
+  
+      await posSession.save();
+      return posSession;
+    } catch (error) {
+      throw new Error(`Error closing session: ${error.message}`);
+    }
+  };
+  
 module.exports = {
     createPosSession,
     getActiveSession,
     getAllPosSessions,
     getSessionById,
     updatePosSessionById,
+    closePosSessionById,
     deletePosSeessionById
 };

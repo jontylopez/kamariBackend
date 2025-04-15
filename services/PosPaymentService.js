@@ -1,15 +1,21 @@
 const { error } = require('winston');
 const POS_PAYMENT = require('../models/pos_payment');
 
-//Create
-const createPosPayment = async(data)=>{
-    try{
-        const payment = await POS_PAYMENT.create(data);
-        return payment;
-    }catch(error){
-        throw new Error(`Error Creating Pos Payment: ${error.message}`);
+// Create
+const createPosPayment = async (data, transaction = null) => {
+    try {
+      const options = transaction ? { transaction } : {};
+      const payment = await POS_PAYMENT.create(data, options);
+      return payment;
+    } catch (error) {
+      throw new Error(`Error Creating Pos Payment: ${error.message}`);
     }
-};
+  };
+  
+  module.exports = {
+    createPosPayment
+  };
+  
 //Get All
 const getAllPosPayment = async()=>{
     try{
