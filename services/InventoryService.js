@@ -124,12 +124,51 @@ const generateBarcodePrefix = async (product_id) => {
   return `${genderCode}${typeCode}`;
 };
 const generateNextBarcode = async (prefix) => {
-  const count = await Inventory.count({
-    where: {
-      b_code_id: { [Op.like]: `${prefix}%` },
-    },
-  });
-  return `${prefix}${String(count + 1).padStart(5, "0")}`;
+  try {
+    // Get the highest existing barcode number for this prefix
+    const highestBarcode = await Inventory.findOne({
+      where: {
+        b_code_id: { [Op.like]: `${prefix}%` },
+      },
+      attributes: ["b_code_id"],
+      order: [["b_code_id", "DESC"]],
+      raw: true,
+    });
+
+    let nextNumber = 1;
+
+    if (highestBarcode) {
+      // Extract the numeric part from the highest barcode
+      const numericPart = highestBarcode.b_code_id.replace(prefix, "");
+      const highestNumber = parseInt(numericPart, 10);
+
+      // Find the first available number by checking for gaps
+      const result = await Inventory.findOne({
+        where: {
+          b_code_id: { [Op.like]: `${prefix}%` },
+          b_code_id: {
+            [Op.not]: `${prefix}${String(highestNumber).padStart(5, "0")}`,
+          },
+        },
+        attributes: ["b_code_id"],
+        order: [["b_code_id", "DESC"]],
+        raw: true,
+      });
+
+      if (result) {
+        // If we found a gap, use the next number after the highest
+        nextNumber = highestNumber + 1;
+      } else {
+        // If no gap found, use the next number after the highest
+        nextNumber = highestNumber + 1;
+      }
+    }
+
+    return `${prefix}${String(nextNumber).padStart(5, "0")}`;
+  } catch (error) {
+    console.error("Error generating next barcode:", error);
+    throw new Error("Failed to generate barcode");
+  }
 };
 
 const isDuplicateInventory = async ({
