@@ -311,24 +311,37 @@ const generateCSVReportForSession = async (sessionId) => {
 
     csvData.push("Returns Report");
     csvData.push(
-      "Inventory ID,Barcode,Quantity,Price,Restock,Date,Time,Processed By"
+      "Inventory ID,Barcode,Quantity,Price,Buy Price,Restock,Date,Time,Processed By"
     );
 
     let hasReturns = false;
     for (const ret of returns) {
       for (const item of ret.items || []) {
         const barcode = item.inventory?.b_code_id || "N/A";
+
+        // Get the most recent stock movement for this inventory to find buy_price
+        const stockMovement = await STOCK_MOVEMENT.findOne({
+          where: { inventory_id: item.inventory_id },
+          order: [["date", "DESC"]],
+          attributes: ["buy_price"],
+        });
+        const buyPrice = stockMovement?.buy_price || 0;
+
         csvData.push(
-          `${item.inventory_id},${barcode},${item.quantity},${item.price},${
-            item.restock ? "Yes" : "No"
-          },${item.date},${item.time},${item.processed_by}`
+          `${item.inventory_id},${barcode},${item.quantity},${
+            item.price
+          },${buyPrice},${item.restock ? "Yes" : "No"},${item.date},${
+            item.time
+          },${item.processed_by || "N/A"}`
         );
         hasReturns = true;
       }
     }
 
     if (!hasReturns) {
-      csvData.push("No Data,No Data,No Data,No Data,No Data,No Data,No Data");
+      csvData.push(
+        "No Data,No Data,No Data,No Data,No Data,No Data,No Data,No Data,No Data"
+      );
     }
 
     csvData.push("");
@@ -694,17 +707,26 @@ const generateCSVReportForDatePeriod = async (startDate, endDate) => {
 
     csvData.push("Returns Report");
     csvData.push(
-      "Date,Inventory ID,Barcode,Quantity,Price,Restock,Time,Processed By"
+      "Date,Inventory ID,Barcode,Quantity,Price,Buy Price,Restock,Time,Processed By"
     );
 
     let hasReturns = false;
     for (const ret of returns) {
       for (const item of ret.items || []) {
         const barcode = item.inventory?.b_code_id || "N/A";
+
+        // Get the most recent stock movement for this inventory to find buy_price
+        const stockMovement = await STOCK_MOVEMENT.findOne({
+          where: { inventory_id: item.inventory_id },
+          order: [["date", "DESC"]],
+          attributes: ["buy_price"],
+        });
+        const buyPrice = stockMovement?.buy_price || 0;
+
         csvData.push(
           `${ret.date},${item.inventory_id},${barcode},${item.quantity},${
             item.price
-          },${item.restock ? "Yes" : "No"},${ret.time},${
+          },${buyPrice},${item.restock ? "Yes" : "No"},${ret.time},${
             item.processed_by || "N/A"
           }`
         );
@@ -714,7 +736,7 @@ const generateCSVReportForDatePeriod = async (startDate, endDate) => {
 
     if (!hasReturns) {
       csvData.push(
-        "No Data,No Data,No Data,No Data,No Data,No Data,No Data,No Data"
+        "No Data,No Data,No Data,No Data,No Data,No Data,No Data,No Data,No Data"
       );
     }
 
